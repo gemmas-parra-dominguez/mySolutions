@@ -105,9 +105,3 @@ class Mom:
         for act in self.activity:
             if self.activity[act]:
                 print(self.activity_msg[act])
-    
-mom = Mom("Gemma")
-print(mom)
-mom.sendMom2TeCanasta()
-mom.howIsMom()
-mom.whatIsMomDoing()
