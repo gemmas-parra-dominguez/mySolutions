@@ -1,13 +1,9 @@
-class Mom:
-
-    personal_data = {"age": "",
-                     "name": "", 
-                     "childs": "", 
-                     "fav color": "", 
-                     "fav drink": "", 
-                     "fav snak": "", 
-                     "fav food": "", 
-                     "hobbie": ""}
+class gsMom:
+    
+    personal_data_keys = ["name", "age", "childs", "fav color", "fav drink", "fav snack", "fav food", "hobbie"]
+    personal_data_values = ["mom", 30, 1, "purple", "water", "fries", "enchiladas", "breath"]
+    mood_keys = ["isAngry", "isSleepy", "isHappy", "isStressFree", "isOutOfBussiness", "isBusy"]
+    activity_keys = ["isWorking", "isCooking",  "isSleeping", "isWorkingOut", "isGettingTipsy", "IsKeepingYouAlive", "isHiding"]
 
     activity_msg = {"isWorking": "Mom is working.",
                     "isCooking": "Mom is cooking.", 
@@ -17,45 +13,43 @@ class Mom:
                     "IsKeepingYouAlive": "Mom is keeping you alive.",
                     "isHiding": "Mom is taking five minutes."}
     
-    def __init__(self, name):
-        self.personal_data["name"] = name
+    # Initializers
+    def __init__(self, default_data={}):
+        self.init_personal_data(default_data)
         self.init_mood()
+        self.init_activity()
+       
+        
+    def init_mood(self):
+        self.mood = dict.fromkeys(self.mood_keys, False)
         # Moms are always happy that you're alive.
         self.mood ["isHappy"] = True
         # Moms are always busy because you're alive.
         self.mood ["isBusy"] = True
-
-        self.init_activity()
-        # Moms are always keeping you alive.
-        self.activity ["IsKeepingYouAlive"] = True
-        
-    def init_mood(self):
-        self.mood = {"isAngry": False, 
-                "isSleepy": False, 
-                "isHappy": False,
-                "isStressFree": False,
-                "isOutOfBussiness": False,
-                "isBusy": False }
         
     def init_activity(self):
-        self.activity = {"isWorking": False,
-                    "isCooking": False, 
-                    "isSleeping": False, 
-                    "isWorkingOut": False,
-                    "isGettingTipsy": False,
-                    "IsKeepingYouAlive": False,
-                    "isHiding": False}     
+        self.activity = dict.fromkeys(self.activity_keys, False)
+        # Moms are always keeping you alive.
+        self.activity ["IsKeepingYouAlive"] = True
+
+    def init_personal_data(self, default_data={}):
+        self.personal_data = dict(zip(self.personal_data_keys, self.personal_data_values))
+        self.modifyData(default_data)
 
     def __repr__(self):
         return f"Mom is called: {self.personal_data["name"]}"
     
+    def __call__(self):
+        print("This is " + self.personal_data["name"])
+
+    # Resets
     def resetMomMood(self):
-        for mood in self.mood:
-            self.mood[mood] = False
+        self.mood.clear()
+        self.init_mood()
 
     def resetMomActivities(self):
-        for act in self.activity:
-            self.activity[act] = False
+        self.activity.clear()
+        self.init_activity()
 
     def sendMom2Gym(self):
         self.resetMomMood()
@@ -93,6 +87,7 @@ class Mom:
         self.activity["IsKeepingYouAlive"] = False
         self.activity["isHiding"] = True
 
+    # Print fuctions
     def howIsMom(self):
         print("Mom is happy!") if(self.mood["isHappy"]) else print("Run! Mom isn't happy.")
         print("Mom is relaxed!") if(self.mood["isStressFree"]) else print("Watch out! Mom is stressed out.")
@@ -105,3 +100,28 @@ class Mom:
         for act in self.activity:
             if self.activity[act]:
                 print(self.activity_msg[act])
+
+    def showPersonalData(self):
+        for data in self.personal_data:
+            if (type(self.personal_data[data]) != str):
+                print(data + " is " + str(self.personal_data[data]))
+            else:
+                print(data + " is " + self.personal_data[data])
+            
+    # Setters
+    def modifyData(self, data2Set):
+         for data in data2Set:
+             if data in self.personal_data:
+                 self.personal_data[data] = data2Set[data]
+    
+    def updateData(self, data2Set):
+        self.personal_data.update(data2Set)
+    
+    # Getters
+    def retrieveData(self, data2Get):
+        resultData = {}
+        for data in data2Get:
+            if data in self.personal_data:
+                resultData[data] = self.personal_data[data]
+        
+        return resultData
