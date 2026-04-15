@@ -1,7 +1,7 @@
 class GsMom:
     
-    personal_data_keys = ["name", "age", "childs", "fav color", "fav drink", "fav snack", "fav food", "hobbie"]
-    personal_data_values = ["mom", 30, 1, "purple", "water", "fries", "enchiladas", "breath"]
+    personal_data_keys = ["Name", "Age", "Childs", "Fav color", "Fav drink", "Fav snack", "Fav food", "Hobbie"]
+    personal_data_values = ["Mom", 30, 1, "purple", "water", "fries", "enchiladas", "breath"]
     mood_keys = ["isExhausted", "isSleepy", "isHappy", "isStressFree", "isOutOfBussiness", "isBusy"]
     activity_keys = ["isWorking", "isCooking",  "isSleeping", "isWorkingOut", "isGettingTipsy", "IsKeepingYouAlive", "isHiding", "isCleaning"]
 
@@ -25,8 +25,8 @@ class GsMom:
         self.mood = dict.fromkeys(self.mood_keys, False)
         # Moms are always happy that you're alive.
         self.mood ["isHappy"] = True
-        # Moms are always busy because you're alive.
-        self.mood ["isBusy"] = True
+        # Moms wake up relaxed
+        self.mood["isStressFree"] = True
         
     def init_activity(self):
         self.activity = dict.fromkeys(self.activity_keys, False)
@@ -38,10 +38,10 @@ class GsMom:
         self.modify_data(default_data)
 
     def __repr__(self):
-        return f"Mom is called: {self.personal_data["name"]}"
+        return f"This is class Mom, default name is {self.personal_data["Name"]}"
     
     def __call__(self):
-        print("This is " + self.personal_data["name"])
+        print("This is class Mom, she is called " + self.personal_data["Name"])
 
     # Resets
     def reset_mom_mood(self):
@@ -55,7 +55,7 @@ class GsMom:
                 self.activity[act] = False
 
     def send_mom_to_gym(self):
-        print("Mom is going to the gym!")
+        print("Mom is going to the gym.")
         self.reset_mom_mood()
         self.reset_mom_activities()
         # Set Mom's mood
@@ -68,14 +68,13 @@ class GsMom:
         self.activity["isHiding"] = True
 
     def send_mom_to_sleep(self):
-        print("Mom is going to sleep!")
+        print("Mom is going to sleep.")
         self.reset_mom_mood()
         self.reset_mom_activities()
         # Set Mom's mood
         self.mood["isSleepy"] = True
         self.mood["isHappy"] = True
-        self.mood["isBusy"] = True
-        self.mood["isOutOfBussiness"] = True
+        self.mood["isExhausted"] = True
         # Change Mom's activities
         self.activity["isSleeping"] = True
 
@@ -83,40 +82,50 @@ class GsMom:
         print("Mom is going out with friends!")
         self.reset_mom_mood()
         self.reset_mom_activities()
-        # Set Mom's mood 
-        self.mood["isBusy"] = True
+        # Set Mom's mood
         self.mood["isOutOfBussiness"] = True
         self.mood["isStressFree"] = True
         self.mood["isHappy"] = True
+        self.mood["isBusy"] = True
         # Change Mom's activities
         self.activity["isGettingTipsy"] = True
         self.activity["isHiding"] = True
 
-    # activity_keys = ["isWorking", "isCooking",  "isSleeping", "isWorkingOut", "isGettingTipsy", "IsKeepingYouAlive", "isHiding", "isCleaning"]
-    # mood_keys = ["isExhausted", "isSleepy", "isHappy", "isStressFree", "isOutOfBussiness", "isBusy"]
     def mom_doing_magic(self):
-        print("Mom is cookin, cleaning and working!")
+        print("Mom is cooking, cleaning and more!")
         self.reset_mom_mood()
         self.reset_mom_activities()
         # Set Mom's mood 
+        self.mood["isHappy"] = True
         self.mood["isBusy"] = True
         self.mood["isExhausted"] = True
         self.mood["isStressFree"] = True
         # Change Mom's activities
-        self.activity["isWorking"] = True
         self.activity["isCooking"] = True
         self.activity["isCleaning"] = True
         self.activity["IsKeepingYouAlive"] = True
 
+    def mom_earning_money(self):
+        print("Mom is at the computer working.")
+        self.reset_mom_mood()
+        self.reset_mom_activities()
+        # Set Mom's mood 
+        self.mood["isHappy"] = True
+        self.mood["isBusy"] = True
+        self.mood["isStressFree"] = True
+        # Change Mom's activities
+        self.activity["isWorking"] = True
+        self.activity["IsKeepingYouAlive"] = True
 
-    # Print fuctions
+
+    # Printing fuctions
     def how_is_mom(self):
-        print("Mom is happy!") if(self.mood["isHappy"]) else print("Run! Mom isn't happy.")
-        print("Mom is relaxed!") if(self.mood["isStressFree"]) else print("Watch out! Mom is stressed out.")
-        print("Careful! Mom is exhausted!") if(self.mood["isExhausted"]) else print("Mom isn't exhausted.")
-        print("Shhhh! Mom is sleepy!") if(self.mood["isSleepy"]) else print("Mom isn't sleepy.")
-        print("Mom is out of bussiness! Look for dadda.") if(self.mood["isOutOfBussiness"]) else print("Mom is here!")
-        print("Careful! Mom is Busy.") if(self.mood["isBusy"]) else print("Mom is available.")
+        print("Mom is happy.") if(self.mood["isHappy"]) else print("Run! Mom isn't happy.")
+        print("Mom is relaxed.") if(self.mood["isStressFree"]) else print("Watch out! Mom is stressed out.")
+        print("Careful! Mom is exhausted.") if(self.mood["isExhausted"]) else print("Mom isn't exhausted.")
+        print("Shhhh! Mom is sleepy.") if(self.mood["isSleepy"]) else print("Mom isn't sleepy.")
+        print("Mom is out of bussiness! Look for dadda.") if(self.mood["isOutOfBussiness"]) else print("Mom is available!")
+        print("Careful! Mom is Busy.") if(self.mood["isBusy"]) else print("Mom is free.")
 
     def what_is_mom_doing(self):
         for act in self.activity:
