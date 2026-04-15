@@ -1,4 +1,4 @@
-class gsMom:
+class GsMom:
     
     personal_data_keys = ["name", "age", "childs", "fav color", "fav drink", "fav snack", "fav food", "hobbie"]
     personal_data_values = ["mom", 30, 1, "purple", "water", "fries", "enchiladas", "breath"]
@@ -34,7 +34,7 @@ class gsMom:
 
     def init_personal_data(self, default_data={}):
         self.personal_data = dict(zip(self.personal_data_keys, self.personal_data_values))
-        self.modifyData(default_data)
+        self.modify_data(default_data)
 
     def __repr__(self):
         return f"Mom is called: {self.personal_data["name"]}"
@@ -43,17 +43,17 @@ class gsMom:
         print("This is " + self.personal_data["name"])
 
     # Resets
-    def resetMomMood(self):
+    def reset_mom_mood(self):
         self.mood.clear()
         self.init_mood()
 
-    def resetMomActivities(self):
+    def reset_mom_activities(self):
         self.activity.clear()
         self.init_activity()
 
-    def sendMom2Gym(self):
-        self.resetMomMood()
-        self.resetMomActivities()
+    def send_mom_to_gym(self):
+        self.reset_mom_mood()
+        self.reset_mom_activities()
         # Set Mom's mood
         self.mood["isStressFree"] = True
         self.mood["isHappy"] = True
@@ -62,9 +62,9 @@ class gsMom:
         # Change Mom's activities
         self.activity["isWorkingOut"] = True  
 
-    def sendMom2Sleep(self):
-        self.resetMomMood()
-        self.resetMomActivities()
+    def send_mom_to_sleep(self):
+        self.reset_mom_mood()
+        self.reset_mom_activities()
         # Set Mom's mood
         self.mood["isSleepy"] = True
         self.mood["isHappy"] = True
@@ -73,9 +73,9 @@ class gsMom:
         # Change Mom's activities
         self.activity["isSleeping"] = True
 
-    def sendMom2TeCanasta(self):
-        self.resetMomMood()
-        self.resetMomActivities()
+    def send_mom_to_tecanasta(self):
+        self.reset_mom_mood()
+        self.reset_mom_activities()
         print("Mom is out with friends!")
         # Set Mom's mood 
         self.mood["isBusy"] = True
@@ -88,7 +88,7 @@ class gsMom:
         self.activity["isHiding"] = True
 
     # Print fuctions
-    def howIsMom(self):
+    def how_is_mom(self):
         print("Mom is happy!") if(self.mood["isHappy"]) else print("Run! Mom isn't happy.")
         print("Mom is relaxed!") if(self.mood["isStressFree"]) else print("Watch out! Mom is stressed out.")
         print("Careful! Mom is angry!") if(self.mood["isAngry"]) else print("Mom isn't angry.")
@@ -96,12 +96,12 @@ class gsMom:
         print("Mom is out of bussiness! Look for dadda.") if(self.mood["isOutOfBussiness"]) else print("Mom is here!")
         print("Careful! Mom is Busy.") if(self.mood["isBusy"]) else print("Mom is available.")
 
-    def whatIsMomDoing(self):
+    def what_is_mom_doing(self):
         for act in self.activity:
             if self.activity[act]:
                 print(self.activity_msg[act])
 
-    def showPersonalData(self):
+    def show_personal_data(self):
         for data in self.personal_data:
             if (type(self.personal_data[data]) != str):
                 print(data + " is " + str(self.personal_data[data]))
@@ -109,12 +109,12 @@ class gsMom:
                 print(data + " is " + self.personal_data[data])
             
     # Setters
-    def modifyData(self, data2Set):
+    def modify_data(self, data2Set):
          for data in data2Set:
              if data in self.personal_data:
                  self.personal_data[data] = data2Set[data]
     
-    def updateData(self, data2Set):
+    def update_data(self, data2Set):
         self.personal_data.update(data2Set)
     
     # Getters
