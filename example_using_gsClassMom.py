@@ -1,4 +1,4 @@
-import classMom as objMom
+import gsClassMom as objMom
 
 print(objMom.GsMom())
 objMom.GsMom().show_personal_data()

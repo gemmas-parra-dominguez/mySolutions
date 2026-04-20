@@ -1,4 +1,5 @@
-import gsClassesMisc as gsClasses    
+import gsClassMisc as gsClasses
+
 dict_shapes = {'1': 'square', '2':'rectangle'}
 dict_direction = {'1': 'frwd', '2':'rwd', '3':'down', '4':'up'}
 # Create a new Canvas object that is 30 units wide by 30 units tall
