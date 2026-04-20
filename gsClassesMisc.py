@@ -78,29 +78,30 @@ class GsDrawShapes:
         self._scribe = scribe
         self._shape = args[0]
         self._dir = args[1]
+
         if (self._shape == 'square'):
-            self._width = args[2]
-            self._height = args[2]
+            self._width = args[2] - 1
+            self._height = args[2] - 1
         else: #(self._shape == 'rectangle')
-            self._width = args[2]
-            self._height = args[3]
+            self._width = args[2] - 1
+            self._height = args[3] - 1
+
+        if (self._dir == 'rwd' ):
+            self._scribe.pos = [self._width, 0]
+        if (self._dir == 'up'):
+            self._scribe.pos = [self._width, self._height]
 
     def draw_shape(self):
-        #self._canvas.clear()
-        print(self._shape)
-        print(self._dir)
-        if (self._shape == 'square'):
-            if (self._dir == 'frwd'):
-                self.draw_square_frwd()
-            else: #(self._dir == 'rwd')
-                self.draw_square_rwd()
-        else: #(self._shape == 'rectangle'):
-            if(self._dir == 'frwd'):
-                self.draw_rectangle_frwd()
-            else: #(self._dir == 'rwd')
-                self.draw_rectangle_rwd()
+        if (self._dir == 'frwd'):
+            self.draw_frwd()
+        elif (self._dir == 'rwd'):
+            self.draw_rwd()
+        elif (self._dir == 'down'):
+            self.draw_down()
+        else: # (self._dir == 'up')
+            self.draw_up()
 
-    def draw_square_frwd(self):
+    def draw_frwd(self):
         for times in range(self._width):
             self._scribe.right()
         for times in range(self._width):
@@ -110,32 +111,32 @@ class GsDrawShapes:
         for times in range(self._width):
             self._scribe.up()
 
-    def draw_square_rwd(self):
+    def draw_rwd(self):
+        for times in range(self._width):
+            self._scribe.left()
         for times in range(self._width):
             self._scribe.down()
         for times in range(self._width):
             self._scribe.right()
         for times in range(self._width):
+            self._scribe.up()  
+    
+    def draw_down(self):
+        for times in range(self._height):
+            self._scribe.down()
+        for times in range(self._width):
+            self._scribe.right()
+        for times in range(self._height):
             self._scribe.up()
         for times in range(self._width):
             self._scribe.left()
     
-    def draw_rectangle_frwd(self):
-        for times in range(self._width):
-            self._scribe.right()
-        for times in range(self._height):
-            self._scribe.down()
-        for times in range(self._width):
-            self._scribe.left()
-        for times in range(self._height):
-            self._scribe.up()
-    
-    def draw_rectangle_rwd(self):
-        for times in range(self._height):
-            self._scribe.down()
-        for times in range(self._width):
-            self._scribe.right()
+    def draw_up(self):
         for times in range(self._height):
             self._scribe.up()
         for times in range(self._width):
             self._scribe.left()
+        for times in range(self._height):
+            self._scribe.down()
+        for times in range(self._width):
+            self._scribe.right()
