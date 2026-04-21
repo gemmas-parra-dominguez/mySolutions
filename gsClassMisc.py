@@ -31,117 +31,119 @@ class GsCanvas:
             print(' '.join([col[y] for col in self.canvas]))
 
 # This is the GsTerminalScribe class.
-class GsTerminalScribe:
-    def __init__(self, canvas):
-        self.canvas = canvas
+class GsTerminalScribe(GsCanvas):
+    def __init__(self, canvas_width, canvas_height):
+        super().__init__(canvas_width, canvas_height)
         self.framerate = 0.2
         self.position = [0, 0]
 
     def up(self):
         pos = [self.position[0], self.position[1]-1]
-        if not self.canvas.hits_wall(pos):
-            self.draw(pos, '^')
+        if not self.hits_wall(pos):
+            self.draw(pos, '^', color='blue')
 
     def down(self):
         pos = [self.position[0], self.position[1]+1]
-        if not self.canvas.hits_wall(pos):
-            self.draw(pos, 'v')
+        if not self.hits_wall(pos):
+            self.draw(pos, 'v', color='magenta')
 
     def right(self):
         pos = [self.position[0]+1, self.position[1]]
-        if not self.canvas.hits_wall(pos):
-            self.draw(pos, '>')
+        if not self.hits_wall(pos):
+            self.draw(pos, '>', color='yellow')
 
     def left(self):
         pos = [self.position[0]-1, self.position[1]]
-        if not self.canvas.hits_wall(pos):
+        if not self.hits_wall(pos):
             self.draw(pos, '<')
 
-    def draw(self, pos, trail='.', mark='*'):
+    def draw(self, pos, trail='.', mark='*', color='red'):
         # Set the old position to the "trail" symbol
-        self.canvas.set_position(self.position, colored(trail, 'red'))
+        self.set_position(self.position, colored(trail, color))
         # Update position
         self.position = pos
         # Set the new position to the "mark" symbol
-        self.canvas.set_position(self.position, colored(mark, 'red'))
+        self.set_position(self.position, colored(mark, color))
         # Print everything to the screen
-        self.canvas.print()
+        self.print()
         # Sleep for a little bit to create the animation
         time.sleep(self.framerate)
 
 # This is the GsDrawShapes class.
-class GsDrawShapes:    
-    def __init__(self, canvas, scribe, *args):        
-        self.canvas = canvas
-        self.scribe = scribe
-        self.shape = args[0]
-        self.direction = args[1]
+class GsDrawShapes(GsTerminalScribe):
+    _dict_shapes = {'1': 'Square', '2':'Rectangle'}
+    _dict_direction = {'1': 'Forward', '2':'Rewind', '3':'Down', '4':'Up'}
 
-        if (self.shape == 'square'):
+    def __init__(self, canvas_width, canvas_height, *args):        
+        super().__init__(canvas_width, canvas_height)
+        self.shape = args[0]
+        self.direction = args[1]        
+
+        if (self.shape == '1'):
             self.w = args[2] - 1
             self.h = args[2] - 1
-        else: #(self.shape == 'rectangle')
+        else: #(self.shape == '2')
             self.w = args[2] - 1
             self.h = args[3] - 1
 
-        if (self.direction == 'rwd' ):
-            self.scribe.position = [self.w, 0]
-        if (self.direction == 'up'):
-            self.scribe.position = [self.w, self.h]
+        if (self.direction == '2' ):
+            self.position = [self.w, 0]
+        if (self.direction == '4'):
+            self.position = [self.w, self.h]
 
     def draw_shape(self):
-        if (self.direction == 'frwd'):
+        if (self.direction == '1'):
             self.draw_frwd()
-        elif (self.direction == 'rwd'):
+        elif (self.direction == '2'):
             self.draw_rwd()
-        elif (self.direction == 'down'):
+        elif (self.direction == '3'):
             self.draw_down()
-        else: # (self.direction == 'up')
+        else: # (self.direction == '4')
             self.draw_up()
         self.print_info()
 
     def print_info(self):
-        print(f"Canva size is [{self.canvas.width}, {self.canvas.height}]")
-        print(f"Printed shape is {self.shape}")
-        print(f"Printed direction was {self.direction}")
+        print(f"Canva size is [{self.width}, {self.height}]")
+        print(f"Printed shape is {self._dict_shapes[self.shape]}")
+        print(f"Printed direction was {self._dict_direction[self.direction]}")
         print(f"Shape size is [{self.w + 1}, {self.h + 1}]")
 
     def draw_frwd(self):
         for times in range(self.w):
-            self.scribe.right()
+            self.right()
         for times in range(self.w):
-            self.scribe.down()
+            self.down()
         for times in range(self.w):
-            self.scribe.left()
+            self.left()
         for times in range(self.w):
-            self.scribe.up()
+            self.up()
 
     def draw_rwd(self):
         for times in range(self.w):
-            self.scribe.left()
+            self.left()
         for times in range(self.w):
-            self.scribe.down()
+            self.down()
         for times in range(self.w):
-            self.scribe.right()
+            self.right()
         for times in range(self.w):
-            self.scribe.up()  
+            self.up()  
     
     def draw_down(self):
         for times in range(self.h):
-            self.scribe.down()
+            self.down()
         for times in range(self.w):
-            self.scribe.right()
+            self.right()
         for times in range(self.h):
-            self.scribe.up()
+            self.up()
         for times in range(self.w):
-            self.scribe.left()
+            self.left()
     
     def draw_up(self):
         for times in range(self.h):
-            self.scribe.up()
+            self.up()
         for times in range(self.w):
-            self.scribe.left()
+            self.left()
         for times in range(self.h):
-            self.scribe.down()
+            self.down()
         for times in range(self.w):
-            self.scribe.right()
+            self.right()

@@ -1,12 +1,13 @@
 import gsClassMisc as gsClasses
 
-dict_shapes = {'1': 'square', '2':'rectangle'}
-dict_direction = {'1': 'frwd', '2':'rwd', '3':'down', '4':'up'}
+dict_shapes = {'1': 'Square', '2':'Rectangle'}
+dict_direction = {'1': 'Forward', '2':'Rewind', '3':'Down', '4':'Up'}
+
 # Create a new Canvas object that is 30 units wide by 30 units tall
 canvas_size = 30
-canvas = gsClasses.GsCanvas(canvas_size, canvas_size)
+#canvas = gsClasses.GsCanvas(canvas_size, canvas_size)
 # Create a new Scribe object passing the canvas and the characters to use
-scribe = gsClasses.GsTerminalScribe(canvas)
+#scribe = gsClasses.GsTerminalScribe(canvas)
 
 print("What would you like to draw today?")
 print("Pick 1 for Square \nPick 2 for Rectangle")
@@ -27,7 +28,7 @@ if (input_valid):
         print(f"Give the height (max. value is {str(canvas_size)}): ")
         height = input()
     # Create a new Drawing object with the canvas, scribe and the type of figure.
-    shape = gsClasses.GsDrawShapes(canvas, scribe, dict_shapes[figure], dict_direction[direction], int(width), int(height))
+    shape = gsClasses.GsDrawShapes(canvas_size, canvas_size, figure, direction, int(width), int(height))
     # Draw a small square
     shape.draw_shape()
 else:
