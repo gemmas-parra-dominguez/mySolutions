@@ -34,7 +34,7 @@ def get_decimal_value(input_code, dict_hexadecimal_numbers, base = 16):
             # Return -1 if character isn't valid.
             print(f'{char} is not a hex character!')
             return -1
-        # Calculation is perfomed as (decimal value[0])^(n) + (decimal value[1])^(n-1) + (decimal value[2])^(n-2) + ...
+        # Calculation is perfomed as (decimal value[0])*(base)^(n) + (decimal value[1])*(base)^(n-1) + (decimal value[2])*(base)^(n-2) + ...
         count += (dict_hexadecimal_numbers[char] * (base**power))
         power -= 1
     
@@ -75,14 +75,14 @@ def map_to_hex_string(input_code, dict_hexadecimal_numbers):
 def get_hexa_code(input_value, dict_hexadecimal_numbers):
     # 1. Analyze the units, tens, hundreds, etc. of input value to obtain its corresponding value in a system based 16.
     # 2. Split the output string into a list of strings.
-    # 3. Reverse the order of the list to correctly locate the units, tens, hundreds, etc.
+    # 3. Reverse the order of the list from [LSB ... MSB] to [MSB ... LSB]
     code = get_hex_value(input_value).split(',')[::-1]
     # Map the computed list of string to its corresponding hexadecimal character.
     return map_to_hex_string(code, dict_hexadecimal_numbers)
 
 # Function convert_decimal_to_hex(input_value, base = 16) gets as input a positive number of type int, floar, string or list value, to be converted into an hexadecimal base code, the result is an string.
 def convert_decimal_to_hex(input_value, base = 16):
-    # dict_hexadecimal_numbers is a dictionary that maps the values of the decimal system with their corresponding hexadecimal system values.
+    # dict_hexadecimal_numbers is a dictionary that maps the values of the decimal system with their corresponding hexadecimal system characters.
     dict_hexadecimal_numbers = {
     '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
     '10': 'A', '11': 'B', '12': 'C', '13': 'D', '14': 'E', '15': 'F' }
@@ -117,6 +117,7 @@ print("Hexadecimal 'ABC' equals decimal ", convert_hex_to_decimal('ABC'))
 print("Hexadecimal ['A','B', 0] equals decimal ", convert_hex_to_decimal(['A','B', 0]))
 print("Hexadecimal ['F','D','B','E','C','A'] equals decimal ", convert_hex_to_decimal(['F','D','B','E','C','A']))
 print("Hexadecimal ['F','H','0'] equals decimal ", convert_hex_to_decimal(['F','H','0']))
+print("\n")
 print("Decimal 10 equals hexadecimal", convert_decimal_to_hex(10))
 print("Decimal 15 equals hexadecimal", convert_decimal_to_hex(15))
 print("Decimal '16' equals hexadecimal", convert_decimal_to_hex('16'))
