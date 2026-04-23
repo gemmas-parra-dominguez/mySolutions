@@ -52,8 +52,7 @@ class GsUniversalConverter:
         else:
             print("Conversion option is invalid.")
             return -1
-
-    # CHECK
+    
     def convert_binary_to_decimal(self, input_code):
         base = 2               
         # Transform any valid data type into a string before processing
@@ -63,7 +62,7 @@ class GsUniversalConverter:
         elif (type(input_code) == float):
             # If input_code is a float, it's converted to str.
             value = str(int(input_code))
-            print(f"Input {input_code} isn't an int, it is converted to ", value)
+            print(f"Input {value} isn't an int, it is converted to ", value)
         elif type(input_code) == list:
             # If input_code is a list, elements are combined in a single string.
             value = "".join(map(str, input_code))

@@ -1,4 +1,4 @@
-import gsClassMisc as gsClasses
+import gsDrawShapes as gsClasses
 
 dict_shapes = {'1': 'Square', '2':'Rectangle'}
 dict_direction = {'1': 'Forward', '2':'Rewind', '3':'Down', '4':'Up'}
