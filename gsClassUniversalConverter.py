@@ -12,10 +12,18 @@ class GsUniversalConverter:
 
     _dict_decimal_to_bin = {0: '0', 1: '1'}
 
+    _dict_octal_to_decimal = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7}
+
+    _dict_decimal_to_octal = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7'}
+
     _conversion_options = ['hex_to_decimal', 'decimal_to_hex', 'bin_to_decimal', 'decimal_to_bin', 'octal_to_decimal', 'decimal_to_octal']
 
-    def __init__(self):
-        pass
+    def __init__(self, show_opts = False):
+        if (show_opts):
+            print("Conversion options are:", self._conversion_options)
+
+    def __call__(self, *args, **kwds):
+        print("Object is GSUniversalConverter.")
 
     def input_verification(self, input_data, convert_opt):
         # Options verification
@@ -46,9 +54,9 @@ class GsUniversalConverter:
         elif convert_opt == self._conversion_options[3]:
             return self.convert_decimal_to_binary(input_data)
         elif convert_opt == self._conversion_options[4]:
-            return -1
+            return self.convert_octal_to_decimal(input_data)
         elif convert_opt == self._conversion_options[5]:
-            return -1
+            return self.convert_decimal_to_octal(input_data)
         else:
             print("Conversion option is invalid.")
             return -1
@@ -70,20 +78,17 @@ class GsUniversalConverter:
             value = input_code
 
         return self.get_decimal_value(value, self._dict_bin_to_decimal, base)
-
-    # CHECK
-    def get_binary_code(self, input_value, dict_bin_chats):
-        base = 2
+    
+    def get_generic_code(self, input_value, dict_bin_chats, base = 2):
         # Initializing variables
         remainder = input_value % base
         value = int(input_value / base)
-        # If quotient eauqls 0, conversion is over.
+        # If quotient equals 0, conversion is over.
         if (value == 0):
-            return '1'
-        # Recursively, divide the input value by the base, obtain its corresponding binary character, add it to the code.
-        return dict_bin_chats[remainder] + self.get_binary_code(value, dict_bin_chats)
-
-    # CHECK
+            return str(remainder)
+        # Recursively, divide the input value by the base, obtain its corresponding binary character, add it to the code.        
+        return dict_bin_chats[remainder] + self.get_generic_code(value, dict_bin_chats, base)
+    
     def convert_decimal_to_binary(self, input_value):
         base = 2
         
@@ -103,9 +108,8 @@ class GsUniversalConverter:
             return self._dict_decimal_to_bin[value]
         
         # Reverse the order of the list from [LSB ... MSB] to [MSB ... LSB]
-        return self.get_binary_code(value, self._dict_decimal_to_bin)[::-1]
-
-    # CHECK
+        return self.get_generic_code(value, self._dict_decimal_to_bin, base)[::-1]
+    
     def convert_hex_to_decimal(self, input_value):
         base = 16
 
@@ -124,8 +128,7 @@ class GsUniversalConverter:
             code = input_value
         # Get decimal value
         return self.get_decimal_value(code, self._dict_hexadecimal_to_decimal, base)
-
-    # CHECK
+    
     def get_decimal_value(self, input_code='', dict_base_chars='', base = 2):
         # Initializing variables
         count = 0
@@ -143,8 +146,7 @@ class GsUniversalConverter:
             power -= 1
         
         return count
-
-    # CHECK
+    
     def get_hex_value(self, input_value):
         base = 16
         hexa_code = int(input_value % base)
@@ -160,8 +162,7 @@ class GsUniversalConverter:
                 return '0' + ',' + self.get_hex_value(number)
         
         return str(hexa_code) + ',' + self.get_hex_value(number)
-    
-    # CHECK
+        
     def map_to_hex_string(self, input_code, dict_hexadecimal_chars):
         # Initializing variable
         hexa_code = ''
@@ -177,8 +178,7 @@ class GsUniversalConverter:
             hexa_code += dict_hexadecimal_chars[input_code[code]]
         
         return hexa_code
-    
-    #CHECK
+        
     def get_hexa_code(self, input_value, dict_hexadecimal_chars):
         # 1. Analyze the units, tens, hundreds, etc. of input value to obtain its corresponding value in a system based 16.
         # 2. Split the output string into a list of strings.
@@ -186,8 +186,7 @@ class GsUniversalConverter:
         code = self.get_hex_value(input_value).split(',')[::-1]
         # Map the computed list of string to its corresponding hexadecimal character.
         return self.map_to_hex_string(code, dict_hexadecimal_chars)
-
-    # CHECK
+    
     def convert_decimal_to_hex(self, input_value):
         base = 16
                 
@@ -213,3 +212,48 @@ class GsUniversalConverter:
 
         # Get hexadecimal code   
         return self.get_hexa_code(value, self._dict_decimal_to_hexadecimal)
+
+    def  convert_octal_to_decimal(self, input_code):
+        base = 8
+
+        # Transform any valid data type into a string before processing
+        if (type(input_code) == int):
+            # If input_code is an int, it's converted to str.
+            value = str(input_code)
+        elif (type(input_code) == float):
+            # If input_code is a float, it's converted to str.
+            value = str(int(input_code))
+            print(f"Input {value} isn't an int, it is converted to ", value)
+        elif type(input_code) == list:
+            # If input_code is a list, elements are combined in a single string.
+            value = "".join(map(str, input_code))
+        else:
+            value = input_code
+
+        return self.get_decimal_value(value, self._dict_octal_to_decimal, base)
+    
+    def convert_decimal_to_octal(self, input_value):
+        base = 8
+                
+        # Only int, float, string or list are valid input data types.
+        valid_input = (type(input_value) == int) or (type(input_value) == float) or (type(input_value) == str) or (type(input_value) == list)
+
+        if not valid_input:
+            # Return -1 if input isn't valid.
+            print("Input data type is invalid!")
+            return -1
+        
+        if (type(input_value) == str) or (type(input_value) == float):
+            # If input_value is an string or float, it's converted to int.
+            value = int(input_value)
+            print(f"Input {input_value} isn't int, it is converted to ", value)
+        elif type(input_value) == list:
+            # If input_value is a list, elements are combined in a single string.
+            value_str = "".join(map(str, input_value))
+            # Then, it's converted to int.
+            value = int(value_str)
+        else:
+            value = input_value 
+
+        # Get hexadecimal code   
+        return self.get_generic_code(value, self._dict_decimal_to_octal, base)[::-1]
