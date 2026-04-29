@@ -56,6 +56,26 @@ class GsTerminalScribe(GsCanvas):
         pos = [self.position[0]-1, self.position[1]]
         if not self.hits_wall(pos):
             self.draw(pos, '<')
+    
+    def up_to_rigth(self):
+        pos = [self.position[0]+1, self.position[1]-1]
+        if not self.hits_wall(pos):
+            self.draw(pos, '/', color='blue')
+    
+    def up_to_left(self):
+        pos = [self.position[0]-1, self.position[1]-1]
+        if not self.hits_wall(pos):
+            self.draw(pos, '\\', color='blue')
+
+    def down_to_rigth(self):
+        pos = [self.position[0]+1, self.position[1]+1]
+        if not self.hits_wall(pos):
+            self.draw(pos, '\\', color='magenta')
+
+    def down_to_left(self):
+        pos = [self.position[0]-1, self.position[1]+1]
+        if not self.hits_wall(pos):
+            self.draw(pos, '/', color='magenta')
 
     def draw(self, pos, trail='.', mark='*', color='red'):
         # Set the old position to the "trail" symbol
@@ -71,35 +91,67 @@ class GsTerminalScribe(GsCanvas):
 
 # This is the GsDrawShapes class.
 class GsDrawShapes(GsTerminalScribe):
-    _dict_shapes = {'1': 'Square', '2':'Rectangle'}
+    _dict_shapes = {'1': 'Square', '2':'Rectangle', '3': 'Triangle'}
     _dict_direction = {'1': 'Forward', '2':'Rewind', '3':'Down', '4':'Up'}
 
-    def __init__(self, canvas_width, canvas_height, *args):        
+    def __init__(self, canvas_width, canvas_height, show_opts):        
         super().__init__(canvas_width, canvas_height)
+        # Show drawing options
+        if (show_opts):
+            print("Available figures: ", self._dict_shapes)        
+            print("Posible directions: ", self._dict_direction)
+
+    def draw_shape(self, *args):
         self.shape = args[0]
         self.direction = args[1]        
 
         if (self.shape == '1'):
             self.w = args[2] - 1
             self.h = args[2] - 1
-        else: #(self.shape == '2')
+        elif (self.shape == '2'):
             self.w = args[2] - 1
             self.h = args[3] - 1
+        else: # self.shape == '3')
+            self.w = args[2] - 1
+            self.h = int((args[2] - 1)/2)
 
-        if (self.direction == '2' ):
-            self.position = [self.w, 0]
-        if (self.direction == '4'):
-            self.position = [self.w, self.h]
+        if (self.shape == '1') or (self.shape == '2'):
+            if (self.direction == '2' ):
+                self.position = [self.w, 0]
+            if (self.direction == '4'):
+                self.position = [self.w, self.h]
+            self.draw_rectangular_shape()
+        else: # (self.shape == '3')
+            if (self.direction == '1' ):
+                self.position = [0, self.h]
+            elif (self.direction == '2'):
+                self.position = [self.w, 0]
+            elif (self.direction == '3' ):
+                self.position = [0, 0]
+            else: # (self.direction == '4')
+                self.position = [self.w, self.h]
+            self.draw_triangular_shape()
 
-    def draw_shape(self):
+    def draw_rectangular_shape(self):
         if (self.direction == '1'):
-            self.draw_frwd()
+            self.draw_rect_frwd()
         elif (self.direction == '2'):
-            self.draw_rwd()
+            self.draw_rect_rwd()
         elif (self.direction == '3'):
-            self.draw_down()
+            self.draw_rect_down()
         else: # (self.direction == '4')
-            self.draw_up()
+            self.draw_rect_up()
+        self.print_info()
+
+    def draw_triangular_shape(self):
+        if (self.direction == '1'):
+            self.draw_triang_frwd()
+        elif (self.direction == '2'):
+            self.draw_triang_rwd()
+        elif (self.direction == '3'):
+            self.draw_triang_down()
+        else: # (self.direction == '4')
+            self.draw_triang_up()
         self.print_info()
 
     def print_info(self):
@@ -108,7 +160,7 @@ class GsDrawShapes(GsTerminalScribe):
         print(f"Printed direction was {self._dict_direction[self.direction]}")
         print(f"Shape size is [{self.w + 1}, {self.h + 1}]")
 
-    def draw_frwd(self):
+    def draw_rect_frwd(self):
         for times in range(self.w):
             self.right()
         for times in range(self.w):
@@ -118,7 +170,7 @@ class GsDrawShapes(GsTerminalScribe):
         for times in range(self.w):
             self.up()
 
-    def draw_rwd(self):
+    def draw_rect_rwd(self):
         for times in range(self.w):
             self.left()
         for times in range(self.w):
@@ -128,7 +180,7 @@ class GsDrawShapes(GsTerminalScribe):
         for times in range(self.w):
             self.up()  
     
-    def draw_down(self):
+    def draw_rect_down(self):
         for times in range(self.h):
             self.down()
         for times in range(self.w):
@@ -138,12 +190,44 @@ class GsDrawShapes(GsTerminalScribe):
         for times in range(self.w):
             self.left()
     
-    def draw_up(self):
+    def draw_rect_up(self):
         for times in range(self.h):
             self.up()
         for times in range(self.w):
             self.left()
         for times in range(self.h):
             self.down()
+        for times in range(self.w):
+            self.right()
+    
+    def draw_triang_frwd(self):
+        for times in range(self.h):
+            self.up_to_rigth()
+        for times in range(self.h):
+            self.down_to_rigth()
+        for times in range(self.w):
+            self.left()
+
+    def draw_triang_rwd(self):
+        for times in range(self.h):
+            self.down_to_left()
+        for times in range(self.h):
+            self.up_to_left()
+        for times in range(self.w):
+            self.right()
+
+    def draw_triang_down(self):
+        for times in range(self.h):
+            self.down_to_rigth()
+        for times in range(self.h):
+            self.up_to_rigth()
+        for times in range(self.w):
+            self.left()
+
+    def draw_triang_up(self):
+        for times in range(self.h):
+            self.up_to_left()
+        for times in range(self.h):
+            self.down_to_left()
         for times in range(self.w):
             self.right()
